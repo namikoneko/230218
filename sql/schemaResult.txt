@@ -1,0 +1,17 @@
+CREATE TABLE data(
+id integer primary key autoincrement,
+parent integer,
+title text,
+sort integer,
+url text,
+updated text,
+ text
+, cat integer);
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE cat(
+id integer primary key autoincrement,
+user integer,
+title text,
+sort integer,
+updated text
+);
