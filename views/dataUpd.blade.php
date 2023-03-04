@@ -6,6 +6,9 @@
 
     <input type='hidden' name='id' value="{{$row['id']}}">
 
+    <label for="ins-cat">cat:</label>
+    <input type="text" class="inputText form-control" name="cat" id="ins-cat" value="{{$row['cat']}}">
+
     <label for="ins-parent">parent:</label>
     <input type="text" class="inputText form-control" name="parent" id="ins-parent" value="{{$row['parent']}}">
 

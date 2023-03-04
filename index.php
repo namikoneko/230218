@@ -542,14 +542,15 @@ Flight::route('/@page/dataUpd', function($page){//##############################
 Flight::route('/@page/dataUpdExe', function($page){//################################################## dataUpdExe
 
     $id = Flight::request()->data->id;
+    $cat = Flight::request()->data->cat;
     $parent = Flight::request()->data->parent;
     $title = Flight::request()->data->title;//
     $url = Flight::request()->data->url;//
     $sort = Flight::request()->data->sort;//
 
     $db = new PDO('sqlite:data.db');
-    $stmt = $db->prepare("update data set parent = ?,title = ?,url = ?,sort = ? where id = ?");
-    $array = array($parent, $title, $url, $sort, $id);
+    $stmt = $db->prepare("update data set cat = ?,parent = ?,title = ?,url = ?,sort = ? where id = ?");
+    $array = array($parent, $cat, $title, $url, $sort, $id);
     $stmt->execute($array);
 
     Flight::redirect('/' . $page . '/datas');
