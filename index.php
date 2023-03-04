@@ -56,7 +56,7 @@ $baseUrl = Flight::get('baseUrl');//
 
 //cat update
 $str .= '<span class="ms-2 col-1  d-flex align-items-center"><a href="';
-$str .= $baseUrl . "catUpd/" . $rowCat["id"];
+$str .= $baseUrl . "catUpd?id=" . $rowCat["id"];
 $str .= '">';
 $str .= "update";
 $str .= '</a></span>';
@@ -326,16 +326,17 @@ Flight::route('/catInsExe', function(){//#######################################
     Flight::redirect('/datas');
 });
 
-Flight::route('/catUpd/@id', function($id){//################################################## catUpd
+Flight::route('/catUpd', function(){//################################################## catUpd
 
-    $db = new PDO('sqlite:data.db');
+    $id = Flight::request()->query->id;
+
+    $db = new PDO('sqlite:./data.db');
     $stmt = $db->prepare("select * from cat where id = ?");
     $array = array($id);
     $stmt->execute($array);
 
     $rows = makeRows($stmt);
     $row = $rows[0];
-
 
   $baseUrl = Flight::get('baseUrl');//
   $blade = Flight::get('blade');//
@@ -365,6 +366,35 @@ Flight::route('/catDel/@id', function($id){//###################################
 
     Flight::redirect('/datas');
 });
+
+Flight::route('/catList', function(){//################################################## datasTop
+
+    $db = new PDO('sqlite:data.db');
+    $stmt = $db->prepare("select * from cat order by id desc");
+    //$array = array($id);
+    $stmt->execute();
+
+    $rows = makeRows($stmt);
+
+  $baseUrl = Flight::get('baseUrl');//
+  $blade = Flight::get('blade');//
+  echo $blade->run("catList",array("rows"=>$rows,"baseUrl"=>$baseUrl)); //
+});
+
+Flight::route('/dataList', function(){//################################################## datasTop
+
+    $db = new PDO('sqlite:data.db');
+    $stmt = $db->prepare("select * from data order by id desc");
+    //$array = array($id);
+    $stmt->execute();
+
+    $rows = makeRows($stmt);
+
+  $baseUrl = Flight::get('baseUrl');//
+  $blade = Flight::get('blade');//
+  echo $blade->run("dataList",array("rows"=>$rows,"baseUrl"=>$baseUrl)); //
+});
+
 
 Flight::route('/test', function(){//################################################## datasTop
 

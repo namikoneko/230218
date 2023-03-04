@@ -17,9 +17,17 @@
     <div class="container" id="app">
 
     <div>
-        <p>
-        </p>
-
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="datas">data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="catList">cat-list</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="dataList">data-list</a>
+          </li>
+        </ul>
         @yield("content")
 
         <p>
@@ -27,6 +35,7 @@
         </p>
 
     </div>
+
     </div>
 
   <script src="/libs/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>

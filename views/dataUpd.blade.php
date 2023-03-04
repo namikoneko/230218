@@ -4,7 +4,7 @@
 
     <form class="ins-form" action='./dataUpdExe' method='post'>
 
-    <input type='hidden' name='id' value={{$row["id"]}}>
+    <input type='hidden' name='id' value="{{$row['id']}}">
 
     <label for="ins-parent">parent:</label>
     <input type="text" class="inputText form-control" name="parent" id="ins-parent" value="{{$row['parent']}}">
@@ -23,11 +23,11 @@
     </form>
 
 <div class="my-3">
-    <a  class="d-inline text-decoration-none px-2 py-1 rounded data-item-a border border-primary" href='../dataDel/{{$row["id"]}}'>delete</a>
+    <a  class="d-inline text-decoration-none px-2 py-1 rounded data-item-a border border-primary" href='../dataDel/"{{$row['id']}}"'>delete</a>
 </div>
 
 <!--
-    <a class="d-inline text-decoration-none px-2 py-1 ms-2 rounded data-item-a border border-primary" href='{{$baseUrl}}dataUp/{{$row["id"]}}'>up</a>
+    <a class="d-inline text-decoration-none px-2 py-1 ms-2 rounded data-item-a border border-primary" href='{{$baseUrl}}dataUp/"{{$row['id']}}"'>up</a>
 
 -->
 
