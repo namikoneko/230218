@@ -17,14 +17,21 @@
     <div class="container" id="app">
 
     <div>
+
+    <div class="d-flex justify-content-around">
+
+        <ul class="nav">
+
+          <li class="nav-item">
+            <a class="nav-link" href="/230218/pageList">page-list</a>
+          </li>
+
+        </ul>
+
         <ul class="nav">
 
           <li class="nav-item">
             <a class="nav-link" href="datas">data</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="/230218/pageList">page-list</a>
           </li>
 
           <li class="nav-item">
@@ -36,13 +43,16 @@
           </li>
 
         </ul>
+
+    </div>
+
+
         @yield("content")
 
         <p>
             footer
         </p>
 
-    </div>
 
     </div>
 
