@@ -2,7 +2,11 @@
 
 @section("content")
 
+<h3 class="bg-white px-2">{{$pageRow["title"]}}</h3>
+
 <form class="ins-form mt-2" action="/230218/catInsExe" method="post">
+
+    <input type='hidden' name='page' value="{{$page}}">
 
     <div class="row">
 

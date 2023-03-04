@@ -23,11 +23,11 @@
     </form>
 
 <div class="my-3 d-flex justify-content-end">
-    <a  class="d-inline text-decoration-none px-2 py-1 rounded data-item-a border border-primary" href='../dataDel/"{{$row['id']}}"'>delete</a>
+    <a  class="d-inline text-decoration-none px-2 py-1 rounded data-item-a border border-primary" href="./dataDel/{{$row['id']}}">delete</a>
 </div>
 
+    <a class="d-inline text-decoration-none px-2 py-1 ms-2 rounded data-item-a border border-primary" href='{{$baseUrl}}dataUp/{{$row['id']}}'>up</a>
 <!--
-    <a class="d-inline text-decoration-none px-2 py-1 ms-2 rounded data-item-a border border-primary" href='{{$baseUrl}}dataUp/"{{$row['id']}}"'>up</a>
 
 -->
 

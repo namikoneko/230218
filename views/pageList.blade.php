@@ -51,7 +51,8 @@
     </div>
 
     <div class="col-3">
-        {{$row["title"]}}
+        <a  class="text-decoration-none px-2 py-1" href="{{$baseUrl}}{{$row['id']}}/datas">{{$row["title"]}}</a>
+        
     </div>
 
     <div class="col-5 text-break p-0">

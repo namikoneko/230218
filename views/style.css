@@ -55,7 +55,7 @@ body {
 
 /*孫階層以降共通*/
 .gnav li ul {
-    left: 100.5%;
+    left: 101%;
 /*    left: 212px;*/
     position: absolute;
     top: 0;

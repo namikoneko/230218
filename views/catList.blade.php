@@ -2,6 +2,8 @@
 
 @section("content")
 
+<h3 class="bg-white px-2">{{$pageRow["title"]}}</h3>
+
     <div class="bg-white">
 
     <div class="mt-2 px-3 py-2 row border-bottom">
