@@ -4,8 +4,8 @@ ini_set('display_errors', 1);
 require_once '../libs/flight/Flight.php';
 //require_once '../libs/Parsedown.php';
 
-require_once '../libs/Michelf/MarkdownExtra.inc.php';
-use \Michelf\MarkdownExtra;
+//require_once '../libs/Michelf/MarkdownExtra.inc.php';
+//use \Michelf\MarkdownExtra;
 
 require_once ("../libs/blade/BladeOne.php");
 use eftec\bladeone\BladeOne;
@@ -400,9 +400,11 @@ Flight::route('/test', function(){//############################################
 
     echo "test";
 
+/*
     $text = "#1 header1!";
     $html = MarkdownExtra::defaultTransform( $text );
     echo $html;
+*/
 
 });
 

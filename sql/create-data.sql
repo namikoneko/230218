@@ -5,5 +5,6 @@ title text,
 sort integer,
 url text,
 updated text,
- text
+text text,
+cat integer);
 );
