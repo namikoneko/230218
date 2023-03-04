@@ -1,1 +1,1 @@
-alter table data add cat integer;
+alter table cat add page integer;

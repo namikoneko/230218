@@ -138,7 +138,7 @@ $str .= '</a>';
 
 $str .= '<a class="col-10" href="';
 $str .= $row0["url"];
-$str .= '">';
+$str .= '" target="_blank">';
 $str .= $row0["title"];
 //$str .= $row0["id"] . " " . $row0["title"];
 $str .= '</a>';
@@ -169,7 +169,9 @@ $str .= '</a>';
 
             $str .= '<a class="col-10" href="';
             $str .= $row1["url"];
-            $str .= '">';
+            $str .= '" target="_blank">';
+
+            //$str .= '">';
             $str .= $row1["title"];
 //            $str .= $row1["id"] . " " . $row1["title"];
             $str .= '</a>';
@@ -199,7 +201,9 @@ $str .= '</a>';
 
                         $str .= '<a class="col-10" href="';
                         $str .= $row2["url"];
-                        $str .= '">';
+                        $str .= '" target="_blank">';
+
+                        //$str .= '">';
                         $str .= $row2["title"];
                         //$str .= $row2["id"] . " " . $row2["title"];
                         $str .= '</a>';

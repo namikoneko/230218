@@ -7,7 +7,7 @@
     <div class="mt-2 px-3 py-2 row border-bottom">
 
         <div class="col-1">id</div>
-        <div class="col-1">parent</div>
+        <div class="col-1">page</div>
         <div class="col-3">title</div>
         <div class="col-5 p-0">url</div>
         <div class="col-2">update</div>
@@ -23,7 +23,7 @@
     </div>
 
     <div class="col-1">
-        {{$row["parent"]}}
+        dummy
     </div>
 
     <div class="col-3">
@@ -36,10 +36,9 @@
 
     <div class="col-2">
 
-        <a class="text-decoration-none" href='dataUpd?id={{$row["id"]}}'>update</a>
+        <a class="text-decoration-none" href='pageUpd?id={{$row["id"]}}'>update</a>
 
     </div>
-
 
   @endforeach
 
@@ -48,11 +47,7 @@
 </div>
 
 <!--
-    <div class="col-2">
-
-        <a class="text-decoration-none" href='dataDel/{{$row["id"]}}'>delete</a>
-
-    </div>
+        sort: <input type="text" class="inputText form-control" name="sort">
 
 -->
 
