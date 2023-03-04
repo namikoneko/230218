@@ -3,5 +3,6 @@ id integer primary key autoincrement,
 user integer,
 title text,
 sort integer,
-updated text
+updated text,
+page integer
 );

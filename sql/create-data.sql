@@ -6,5 +6,5 @@ sort integer,
 url text,
 updated text,
 text text,
-cat integer);
+cat integer
 );
