@@ -330,6 +330,17 @@ Flight::route('/catInsExe', function(){//#######################################
     Flight::redirect('/datas');
 });
 
+Flight::route('/pageInsExe', function(){//################################################## datasTop
+
+    $title = Flight::request()->data->title;
+
+    $db = new PDO('sqlite:./data.db');
+    $stmt = $db->prepare("insert into page (title,updated,sort) values (?,?,?)");
+    $array = array($title,time(),0);
+    $stmt->execute($array);
+    Flight::redirect('/pageList');
+});
+
 Flight::route('/catUpd', function(){//################################################## catUpd
 
     $id = Flight::request()->query->id;
@@ -347,6 +358,23 @@ Flight::route('/catUpd', function(){//##########################################
   echo $blade->run("catUpd",array("row"=>$row,"baseUrl"=>$baseUrl)); //
 });
 
+Flight::route('/pageUpd', function(){//################################################## catUpd
+
+    $id = Flight::request()->query->id;
+
+    $db = new PDO('sqlite:./data.db');
+    $stmt = $db->prepare("select * from page where id = ?");
+    $array = array($id);
+    $stmt->execute($array);
+
+    $rows = makeRows($stmt);
+    $row = $rows[0];
+
+  $baseUrl = Flight::get('baseUrl');//
+  $blade = Flight::get('blade');//
+  echo $blade->run("pageUpd",array("row"=>$row,"baseUrl"=>$baseUrl)); //
+});
+
 Flight::route('/catUpdExe', function(){//################################################## catUpdExe
 
     $id = Flight::request()->data->id;
@@ -362,6 +390,21 @@ Flight::route('/catUpdExe', function(){//#######################################
     Flight::redirect('/datas');
 });
 
+Flight::route('/pageUpdExe', function(){//################################################## catUpdExe
+
+    $id = Flight::request()->data->id;
+    $title = Flight::request()->data->title;//
+    $sort = Flight::request()->data->sort;//
+
+
+    $db = new PDO('sqlite:data.db');
+    $stmt = $db->prepare("update page set title = ?,sort = ? where id = ?");
+    $array = array($title, $sort, $id);
+    $stmt->execute($array);
+
+    Flight::redirect('/pageList');
+});
+
 Flight::route('/catDel/@id', function($id){//################################################## catDel
     $db = new PDO('sqlite:data.db');
     $stmt = $db->prepare("delete from cat where id = ?");
@@ -369,6 +412,29 @@ Flight::route('/catDel/@id', function($id){//###################################
     $stmt->execute($array);
 
     Flight::redirect('/datas');
+});
+
+Flight::route('/pageDel/@id', function($id){//################################################## catDel
+    $db = new PDO('sqlite:data.db');
+    $stmt = $db->prepare("delete from page where id = ?");
+    $array = array($id);
+    $stmt->execute($array);
+
+    Flight::redirect('/pageList');
+});
+
+Flight::route('/pageList', function(){//################################################## datasTop
+
+    $db = new PDO('sqlite:data.db');
+    $stmt = $db->prepare("select * from page order by id desc");
+    //$array = array($id);
+    $stmt->execute();
+
+    $rows = makeRows($stmt);
+
+  $baseUrl = Flight::get('baseUrl');//
+  $blade = Flight::get('blade');//
+  echo $blade->run("pageList",array("rows"=>$rows,"baseUrl"=>$baseUrl)); //
 });
 
 Flight::route('/catList', function(){//################################################## datasTop

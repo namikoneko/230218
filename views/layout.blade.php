@@ -18,15 +18,23 @@
 
     <div>
         <ul class="nav">
+
           <li class="nav-item">
             <a class="nav-link" href="datas">data</a>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="pageList">page-list</a>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link" href="catList">cat-list</a>
           </li>
+
           <li class="nav-item">
             <a class="nav-link" href="dataList">data-list</a>
           </li>
+
         </ul>
         @yield("content")
 
