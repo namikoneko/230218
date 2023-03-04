@@ -7,10 +7,16 @@ url text,
 updated text,
  text
 , cat integer);
-CREATE TABLE sqlite_sequence(name,seq);
 CREATE TABLE cat(
 id integer primary key autoincrement,
 user integer,
+title text,
+sort integer,
+updated text
+, page integer);
+CREATE TABLE page(
+id integer primary key autoincrement,
+page integer,
 title text,
 sort integer,
 updated text

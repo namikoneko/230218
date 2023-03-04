@@ -2,7 +2,8 @@
 
 @section("content")
 
-    <form class="ins-form" action='./catUpdExe' method='post'>
+    <form class="ins-form" action='catUpdExe' method='post'>
+
 
     <input type='hidden' name='id' value="{{$row['id']}}">
 
@@ -21,6 +22,7 @@
 </div>
 
 <!--
+
     <a class="d-inline text-decoration-none px-2 py-1 ms-2 rounded data-item-a border border-primary" href='{{$baseUrl}}catUp/"{{$row['id']}}"'>up</a>
 -->
 

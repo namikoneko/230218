@@ -19,6 +19,238 @@ Flight::set('blade', $blade);
 $baseUrl = "/230218/";
 Flight::set('baseUrl', $baseUrl);
 
+
+//pageList
+Flight::route('/pageList', function(){//################################################## datasTop
+
+    $db = new PDO('sqlite:data.db');
+    $stmt = $db->prepare("select * from page order by id desc");
+    //$array = array($id);
+    $stmt->execute();
+
+    $rows = makeRows($stmt);
+
+  $baseUrl = Flight::get('baseUrl');//
+  $blade = Flight::get('blade');//
+  echo $blade->run("pageList",array("rows"=>$rows,"baseUrl"=>$baseUrl)); //
+});
+
+//catList
+Flight::route('/@page/catList', function($page){//################################################## datasTop
+
+    $db = new PDO('sqlite:data.db');
+
+//pageRowを取得
+    $stmt = $db->prepare("select * from page where id = ?");
+    $array = array($page);
+    $stmt->execute($array);
+
+    $rows = makeRows($stmt);
+    $pageRow = $rows[0];
+
+    $stmt = $db->prepare("select * from cat where page = ? order by id desc");
+    $array = array($page);
+    $stmt->execute($array);
+
+    $rows = makeRows($stmt);
+
+  $baseUrl = Flight::get('baseUrl');//
+  $blade = Flight::get('blade');//
+  echo $blade->run("catList",array("rows"=>$rows,"baseUrl"=>$baseUrl,"pageRow"=>$pageRow)); //
+});
+
+//dataList
+Flight::route('/@page/dataList', function($page){//################################################## datasTop
+
+    $db = new PDO('sqlite:data.db');
+
+//pageRowを取得
+    $stmt = $db->prepare("select * from page where id = ?");
+    $array = array($page);
+    $stmt->execute($array);
+
+    $rows = makeRows($stmt);
+    $pageRow = $rows[0];
+
+//catを、pageで絞り込み
+
+    $stmt = $db->prepare("select * from cat where page = ? order by id desc");
+    $array = array($page);
+    $stmt->execute($array);
+
+    $rows = makeRows($stmt);
+
+//catの配列を作成
+$catArr = [];
+foreach($rows as $row){
+    $catArr[] = $row["id"];
+}
+
+$innerIn = substr(str_repeat(',?', count($catArr)), 1); // '?,?,?'
+
+    $stmt = $db->prepare("select * from data where cat in ({$innerIn})");
+    $stmt->execute($catArr);
+
+    $rows = makeRows($stmt);
+
+  $baseUrl = Flight::get('baseUrl');//
+  $blade = Flight::get('blade');//
+  echo $blade->run("dataList",array("rows"=>$rows,"baseUrl"=>$baseUrl,"pageRow"=>$pageRow)); //
+});
+
+//pageInsExe
+Flight::route('/pageInsExe', function(){//################################################## datasTop
+
+    $title = Flight::request()->data->title;
+
+    $db = new PDO('sqlite:./data.db');
+    $stmt = $db->prepare("insert into page (title,updated,sort) values (?,?,?)");
+    $array = array($title,time(),0);
+    $stmt->execute($array);
+    Flight::redirect('/pageList');
+});
+
+//pageUpd
+Flight::route('/pageUpd', function(){//################################################## catUpd
+
+    $id = Flight::request()->query->id;
+
+    $db = new PDO('sqlite:./data.db');
+    $stmt = $db->prepare("select * from page where id = ?");
+    $array = array($id);
+    $stmt->execute($array);
+
+    $rows = makeRows($stmt);
+    $row = $rows[0];
+
+  $baseUrl = Flight::get('baseUrl');//
+  $blade = Flight::get('blade');//
+  echo $blade->run("pageUpd",array("row"=>$row,"baseUrl"=>$baseUrl)); //
+});
+
+//pageUpdExe
+Flight::route('/pageUpdExe', function(){//################################################## catUpdExe
+
+    $id = Flight::request()->data->id;
+    $title = Flight::request()->data->title;//
+    $sort = Flight::request()->data->sort;//
+
+
+    $db = new PDO('sqlite:data.db');
+    $stmt = $db->prepare("update page set title = ?,sort = ? where id = ?");
+    $array = array($title, $sort, $id);
+    $stmt->execute($array);
+
+    Flight::redirect('/pageList');
+});
+
+//pageDel
+Flight::route('/pageDel/@id', function($id){//################################################## catDel
+    $db = new PDO('sqlite:data.db');
+    $stmt = $db->prepare("delete from page where id = ?");
+    $array = array($id);
+    $stmt->execute($array);
+
+    Flight::redirect('/pageList');
+});
+
+//catInsExe
+Flight::route('/catInsExe', function(){//################################################## datasTop
+
+    $page = Flight::request()->data->page;
+    $title = Flight::request()->data->title;
+
+    $db = new PDO('sqlite:./data.db');
+    $stmt = $db->prepare("insert into cat (page,title,updated,sort) values (?,?,?,?)");
+
+//    $stmt = $db->prepare("insert into cat (title,updated,sort) values (?,?,?)");
+
+    $array = array($page,$title,time(),0);
+
+//    $array = array($title,time(),0);
+    $stmt->execute($array);
+    Flight::redirect('/' . $page . '/datas');
+
+    //Flight::redirect('/datas');
+});
+
+//catUpd
+Flight::route('/@page/catUpd', function($page){//################################################## catUpd
+
+    $id = Flight::request()->query->id;
+
+    $db = new PDO('sqlite:./data.db');
+    $stmt = $db->prepare("select * from cat where id = ?");
+    $array = array($id);
+    $stmt->execute($array);
+
+    $rows = makeRows($stmt);
+    $row = $rows[0];
+
+  $baseUrl = Flight::get('baseUrl');//
+  $blade = Flight::get('blade');//
+  echo $blade->run("catUpd",array("row"=>$row,"baseUrl"=>$baseUrl)); //
+//  echo $blade->run("catUpd",array("row"=>$row,"baseUrl"=>$baseUrl,"page"=>$page)); //
+
+});
+
+//catUpdExe
+Flight::route('/@page/catUpdExe', function($page){//################################################## catUpdExe
+
+    //$page = Flight::request()->data->page;
+    $id = Flight::request()->data->id;
+    $title = Flight::request()->data->title;//
+    $sort = Flight::request()->data->sort;//
+
+
+    $db = new PDO('sqlite:data.db');
+    $stmt = $db->prepare("update cat set title = ?,sort = ? where id = ?");
+    $array = array($title, $sort, $id);
+    $stmt->execute($array);
+
+/*
+
+//pageのためにrowを取得する
+    $stmt = $db->prepare("select * from cat where id = ?");
+    $array = array($id);
+    $stmt->execute($array);
+
+    $rows = makeRows($stmt);
+    $row = $rows[0];
+*/
+
+    Flight::redirect('/' . $page . '/datas');
+
+//    Flight::redirect('/' . $row["page"] . '/datas');
+});
+
+//catDel
+Flight::route('/@page/catDel/@id', function($page,$id){//################################################## catDel
+
+    $db = new PDO('sqlite:data.db');
+
+/*
+//削除前にrow（page）を取得する
+    $stmt = $db->prepare("select * from cat where id = ?");
+    $array = array($id);
+    $stmt->execute($array);
+
+    $rows = makeRows($stmt);
+    $row = $rows[0];
+*/
+
+//delete
+    $stmt = $db->prepare("delete from cat where id = ?");
+    $array = array($id);
+    $stmt->execute($array);
+
+    Flight::redirect('/' . $page . '/datas');
+
+//    Flight::redirect('/' . $row["page"] . '/datas');
+
+});
+
+//datas
 Flight::route('/@page/datas', function($page){//################################################## datasTop
 
     //echo "data";
@@ -66,7 +298,9 @@ $baseUrl = Flight::get('baseUrl');//
 
 //cat update
 $str .= '<span class="ms-2 col-1  d-flex align-items-center"><a href="';
-$str .= $baseUrl . "catUpd?id=" . $rowCat["id"];
+$str .= "catUpd?id=" . $rowCat["id"];
+
+//$str .= $baseUrl . "catUpd?id=" . $rowCat["id"];
 $str .= '">';
 $str .= "update";
 $str .= '</a></span>';
@@ -259,6 +493,7 @@ $str .= '</ul>';
 
 });
 
+//dataInsExe
 Flight::route('/dataInsExe', function(){//################################################## datasTop
 
     $parent = Flight::request()->data->parent;
@@ -285,6 +520,7 @@ Flight::route('/dataInsExe', function(){//######################################
 //    Flight::redirect('/datas');
 });
 
+//dataUpd
 Flight::route('/@page/dataUpd', function($page){//################################################## catUpd
 
     $id = Flight::request()->query->id;
@@ -302,6 +538,7 @@ Flight::route('/@page/dataUpd', function($page){//##############################
   echo $blade->run("dataUpd",array("row"=>$row,"baseUrl"=>$baseUrl)); //
 });
 
+//dataUpdExe
 Flight::route('/@page/dataUpdExe', function($page){//################################################## dataUpdExe
 
     $id = Flight::request()->data->id;
@@ -320,6 +557,7 @@ Flight::route('/@page/dataUpdExe', function($page){//###########################
 //    Flight::redirect('/datas');
 });
 
+//dataDel
 Flight::route('/@page/dataDel/@id', function($page,$id){//################################################## dataDel
 
     $db = new PDO('sqlite:data.db');
@@ -334,6 +572,7 @@ Flight::route('/@page/dataDel/@id', function($page,$id){//######################
     //Flight::redirect('/datas');
 });
 
+//dataUp
 Flight::route('/dataUp/@id', function($id){//################################################## dataUp
     $db = new PDO('sqlite:data.db');
     $stmt = $db->prepare("update data set updated = ? where id = ?");
@@ -343,213 +582,8 @@ Flight::route('/dataUp/@id', function($id){//###################################
     Flight::redirect('/datas');
 });
 
-Flight::route('/catInsExe', function(){//################################################## datasTop
-
-    $page = Flight::request()->data->page;
-    $title = Flight::request()->data->title;
-
-    $db = new PDO('sqlite:./data.db');
-    $stmt = $db->prepare("insert into cat (page,title,updated,sort) values (?,?,?,?)");
-
-//    $stmt = $db->prepare("insert into cat (title,updated,sort) values (?,?,?)");
-
-    $array = array($page,$title,time(),0);
-
-//    $array = array($title,time(),0);
-    $stmt->execute($array);
-    Flight::redirect('/' . $page . '/datas');
-
-    //Flight::redirect('/datas');
-});
-
-Flight::route('/pageInsExe', function(){//################################################## datasTop
-
-    $title = Flight::request()->data->title;
-
-    $db = new PDO('sqlite:./data.db');
-    $stmt = $db->prepare("insert into page (title,updated,sort) values (?,?,?)");
-    $array = array($title,time(),0);
-    $stmt->execute($array);
-    Flight::redirect('/pageList');
-});
-
-Flight::route('/catUpd', function(){//################################################## catUpd
-
-    $id = Flight::request()->query->id;
-
-    $db = new PDO('sqlite:./data.db');
-    $stmt = $db->prepare("select * from cat where id = ?");
-    $array = array($id);
-    $stmt->execute($array);
-
-    $rows = makeRows($stmt);
-    $row = $rows[0];
-
-  $baseUrl = Flight::get('baseUrl');//
-  $blade = Flight::get('blade');//
-  echo $blade->run("catUpd",array("row"=>$row,"baseUrl"=>$baseUrl)); //
-});
-
-Flight::route('/pageUpd', function(){//################################################## catUpd
-
-    $id = Flight::request()->query->id;
-
-    $db = new PDO('sqlite:./data.db');
-    $stmt = $db->prepare("select * from page where id = ?");
-    $array = array($id);
-    $stmt->execute($array);
-
-    $rows = makeRows($stmt);
-    $row = $rows[0];
-
-  $baseUrl = Flight::get('baseUrl');//
-  $blade = Flight::get('blade');//
-  echo $blade->run("pageUpd",array("row"=>$row,"baseUrl"=>$baseUrl)); //
-});
-
-Flight::route('/catUpdExe', function(){//################################################## catUpdExe
-
-    $id = Flight::request()->data->id;
-    $title = Flight::request()->data->title;//
-    $sort = Flight::request()->data->sort;//
 
 
-    $db = new PDO('sqlite:data.db');
-    $stmt = $db->prepare("update cat set title = ?,sort = ? where id = ?");
-    $array = array($title, $sort, $id);
-    $stmt->execute($array);
-
-//pageのためにrowを取得する
-    $stmt = $db->prepare("select * from cat where id = ?");
-    $array = array($id);
-    $stmt->execute($array);
-
-    $rows = makeRows($stmt);
-    $row = $rows[0];
-
-    Flight::redirect('/' . $row["page"] . '/datas');
-});
-
-Flight::route('/pageUpdExe', function(){//################################################## catUpdExe
-
-    $id = Flight::request()->data->id;
-    $title = Flight::request()->data->title;//
-    $sort = Flight::request()->data->sort;//
-
-
-    $db = new PDO('sqlite:data.db');
-    $stmt = $db->prepare("update page set title = ?,sort = ? where id = ?");
-    $array = array($title, $sort, $id);
-    $stmt->execute($array);
-
-    Flight::redirect('/pageList');
-});
-
-Flight::route('/catDel/@id', function($id){//################################################## catDel
-
-    $db = new PDO('sqlite:data.db');
-
-//削除前にrow（page）を取得する
-    $stmt = $db->prepare("select * from cat where id = ?");
-    $array = array($id);
-    $stmt->execute($array);
-
-    $rows = makeRows($stmt);
-    $row = $rows[0];
-
-//delete
-    $stmt = $db->prepare("delete from cat where id = ?");
-    $array = array($id);
-    $stmt->execute($array);
-
-    Flight::redirect('/' . $row["page"] . '/datas');
-
-//    Flight::redirect('/datas');
-});
-
-Flight::route('/pageDel/@id', function($id){//################################################## catDel
-    $db = new PDO('sqlite:data.db');
-    $stmt = $db->prepare("delete from page where id = ?");
-    $array = array($id);
-    $stmt->execute($array);
-
-    Flight::redirect('/pageList');
-});
-
-Flight::route('/pageList', function(){//################################################## datasTop
-
-    $db = new PDO('sqlite:data.db');
-    $stmt = $db->prepare("select * from page order by id desc");
-    //$array = array($id);
-    $stmt->execute();
-
-    $rows = makeRows($stmt);
-
-  $baseUrl = Flight::get('baseUrl');//
-  $blade = Flight::get('blade');//
-  echo $blade->run("pageList",array("rows"=>$rows,"baseUrl"=>$baseUrl)); //
-});
-
-Flight::route('/@page/catList', function($page){//################################################## datasTop
-
-    $db = new PDO('sqlite:data.db');
-
-//pageRowを取得
-    $stmt = $db->prepare("select * from page where id = ?");
-    $array = array($page);
-    $stmt->execute($array);
-
-    $rows = makeRows($stmt);
-    $pageRow = $rows[0];
-
-    $stmt = $db->prepare("select * from cat where page = ? order by id desc");
-    $array = array($page);
-    $stmt->execute($array);
-
-    $rows = makeRows($stmt);
-
-  $baseUrl = Flight::get('baseUrl');//
-  $blade = Flight::get('blade');//
-  echo $blade->run("catList",array("rows"=>$rows,"baseUrl"=>$baseUrl,"pageRow"=>$pageRow)); //
-});
-
-Flight::route('/@page/dataList', function($page){//################################################## datasTop
-
-    $db = new PDO('sqlite:data.db');
-
-//pageRowを取得
-    $stmt = $db->prepare("select * from page where id = ?");
-    $array = array($page);
-    $stmt->execute($array);
-
-    $rows = makeRows($stmt);
-    $pageRow = $rows[0];
-
-//catを、pageで絞り込み
-
-    $stmt = $db->prepare("select * from cat where page = ? order by id desc");
-    $array = array($page);
-    $stmt->execute($array);
-
-    $rows = makeRows($stmt);
-
-//catの配列を作成
-$catArr = [];
-foreach($rows as $row){
-    $catArr[] = $row["id"];
-}
-
-$innerIn = substr(str_repeat(',?', count($catArr)), 1); // '?,?,?'
-
-    $stmt = $db->prepare("select * from data where cat in ({$innerIn})");
-    $stmt->execute($catArr);
-
-    $rows = makeRows($stmt);
-
-  $baseUrl = Flight::get('baseUrl');//
-  $blade = Flight::get('blade');//
-  echo $blade->run("dataList",array("rows"=>$rows,"baseUrl"=>$baseUrl,"pageRow"=>$pageRow)); //
-});
 
 
 Flight::route('/test', function(){//################################################## datasTop
