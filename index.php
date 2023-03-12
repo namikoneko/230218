@@ -275,7 +275,7 @@ $str = "";
 
 foreach($rowsCat as $rowCat){
 
-    $stmt = $db->prepare("select * from data where cat = " . $rowCat["id"] . " and parent = 0 order by sort desc");
+    $stmt = $db->prepare("select * from data where cat = " . $rowCat["id"] . " and parent = 0 order by sort asc");
 
     $stmt->execute();
 
@@ -374,7 +374,7 @@ $str .= '<li class="row">';
 //$str .= '<li class="">';
 
 //update
-$str .= '<a class="col-2" href="';
+$str .= '<a class="col-1 p-0" href="';
 $str .= 'dataUpd?id=';
 $str .= $row0["id"];
 $str .= '">';
@@ -385,7 +385,7 @@ $str .= '</a>';
 
 //$str .= "</span>";
 
-$str .= '<a class="col-10" href="';
+$str .= '<a class="col-11" href="';
 $str .= $row0["url"];
 $str .= '" target="_blank">';
 $str .= $row0["title"];
@@ -409,14 +409,14 @@ $str .= '</a>';
             //$str .= '<span class="">' . $row1["id"] . '</span>';//id
 
 //update
-            $str .= '<a class="col-2" href="';
+            $str .= '<a class="col-1 p-0" href="';
             $str .= 'dataUpd?id=';
             $str .= $row1["id"];
             $str .= '">';
             $str .= $row1["id"];
             $str .= '</a>';
 
-            $str .= '<a class="col-10" href="';
+            $str .= '<a class="col-11" href="';
             $str .= $row1["url"];
             $str .= '" target="_blank">';
 
@@ -441,14 +441,14 @@ $str .= '</a>';
                         $str .= '<li class="row">';
                         //$str .= '<span class="">' . $row2["id"] . '</span>';//id
 
-                        $str .= '<a class="col-2" href="';
+                        $str .= '<a class="col-1 p-0" href="';
                         $str .= 'dataUpd?id=';
                         $str .= $row2["id"];
                         $str .= '">';
                         $str .= $row2["id"];
                         $str .= '</a>';
 
-                        $str .= '<a class="col-10" href="';
+                        $str .= '<a class="col-11" href="';
                         $str .= $row2["url"];
                         $str .= '" target="_blank">';
 
