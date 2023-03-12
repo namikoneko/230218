@@ -13,12 +13,14 @@ body {
     list-style: none;
     position: relative;
     width: 200px;
+    /*
     height: var(--row-height);
 
     border-right: 1px solid #eee;
     border-top: 1px solid #eee;
     background: #001b34;
     color: #fff;
+        */
 }
 
     .gnav li a {
@@ -26,15 +28,13 @@ body {
         text-decoration: none;
         text-align: center;
         /*幅は、rowとcolに任せる*/
-/*        width: 100%;*/
-        /*
+    /*        width: 100%;*/
 
-        border-right: 1px solid #eee;
-        border-top: 1px solid #eee;
-        background: #001b34;
-            */
-        color: #fff;
-    }
+    border-right: 1px solid #eee;
+    border-top: 1px solid #eee;
+    background: #001b34;
+     color: #fff;
+}
 
 .gnav, .gnav ul {
     padding: 0;

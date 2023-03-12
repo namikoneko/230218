@@ -197,15 +197,15 @@ Flight::route('/@page/catUpd', function($page){//###############################
 //catUpdExe
 Flight::route('/@page/catUpdExe', function($page){//################################################## catUpdExe
 
-    //$page = Flight::request()->data->page;
+    $page2 = Flight::request()->data->page;
     $id = Flight::request()->data->id;
     $title = Flight::request()->data->title;//
     $sort = Flight::request()->data->sort;//
 
 
     $db = new PDO('sqlite:data.db');
-    $stmt = $db->prepare("update cat set title = ?,sort = ? where id = ?");
-    $array = array($title, $sort, $id);
+    $stmt = $db->prepare("update cat set page = ?,title = ?,sort = ? where id = ?");
+    $array = array($page2, $title, $sort, $id);
     $stmt->execute($array);
 
 /*
@@ -317,7 +317,7 @@ $str .= '<input type="hidden" class="" name="cat" value=' . $rowCat["id"] . '>';
 
 $str .= '<div class="row">';
 
-    $str .= '<div class="col-3">';
+    $str .= '<div class="col-2">';
     $str .= "parent";
     $str .= '<input type="text" class="inputText form-control" name="parent">';
     $str .= '</div>';
@@ -332,7 +332,12 @@ $str .= '<div class="row">';
     $str .= '<input type="text" class="inputText form-control" name="url">';
     $str .= '</div>';
 
-    $str .= '<div class="col-3 d-flex align-items-end">';
+    $str .= '<div class="col-2">';
+    $str .= "sort";
+    $str .= '<input type="text" class="inputText form-control" name="sort">';
+    $str .= '</div>';
+
+    $str .= '<div class="col-2 d-flex align-items-end">';
     $str .= '<input class="btn btn-light mt-2" type="submit" value="insert">';
     $str .= '</div>';
 
@@ -501,10 +506,12 @@ Flight::route('/dataInsExe', function(){//######################################
     $title = Flight::request()->data->title;
     $url = Flight::request()->data->url;
     $cat = Flight::request()->data->cat;
+    $sort = Flight::request()->data->sort;
+    if($sort == ""){$sort = 0;}
 
     $db = new PDO('sqlite:./data.db');
-    $stmt = $db->prepare("insert into data (parent,title,url,updated,sort,cat) values (?,?,?,?,?,?)");
-    $array = array($parent,$title,$url,time(),0,$cat);
+    $stmt = $db->prepare("insert into data (parent,title,url,updated,cat,sort) values (?,?,?,?,?,?)");
+    $array = array($parent,$title,$url,time(),$cat,$sort);
     $stmt->execute($array);
 
 //pageのためにrowを取得する
@@ -550,7 +557,7 @@ Flight::route('/@page/dataUpdExe', function($page){//###########################
 
     $db = new PDO('sqlite:data.db');
     $stmt = $db->prepare("update data set cat = ?,parent = ?,title = ?,url = ?,sort = ? where id = ?");
-    $array = array($parent, $cat, $title, $url, $sort, $id);
+    $array = array($cat, $parent, $title, $url, $sort, $id);
     $stmt->execute($array);
 
     Flight::redirect('/' . $page . '/datas');

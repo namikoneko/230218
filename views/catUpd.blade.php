@@ -7,6 +7,9 @@
 
     <input type='hidden' name='id' value="{{$row['id']}}">
 
+    <label for="ins-page">page:</label>
+    <input type="text" class="inputText form-control" name="page" id="ins-page" value="{{$row['page']}}">
+
     <label for="ins-title">title:</label>
     <input type="text" class="inputText form-control" name="title" id="ins-title" value="{{$row['title']}}">
 
